@@ -19,6 +19,12 @@ def push_task():
         app = db.read('SELECT * FROM app where app_id = %d' % (post_data['app_id']))
         app = app[0]
 
+        if post_data.has_key('push_type') == False or post_data['push_type'] == '':
+            post_data['push_type'] = app['app_default_push_type']
+
+        if post_data.has_key('push_target') == False or post_data['push_target'] == '':
+            post_data['push_target'] = app['app_default_push_target']
+
         if request.remote_addr != app['app_server_ip']:
             raise Exception('ip addr not match! your ip : %s' % (request.remote_addr))
 
