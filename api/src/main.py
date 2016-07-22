@@ -47,7 +47,9 @@ def push_task():
         push_data['push_content'] = post_data['push_content']
 
         r = redis.Redis(os.getenv('CACHE_HOST'))
-        r.publish(app['app_channel'], json.dumps(push_data, ensure_ascii=False))
+        ret = r.publish(app['app_channel'], json.dumps(push_data, ensure_ascii=False))
+        if ret < 1:
+            raise Exception('worker not ready! please contact admin')
     except Exception as e:
         ret_data = {'db_status' : True, 'cache_status' : False, 'error_info' : e.message, 'log_id' : log_id}
         return json.dumps(ret_data, ensure_ascii=False)
