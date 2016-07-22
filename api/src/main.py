@@ -12,7 +12,6 @@ app = Flask(__name__)
 
 @app.route('/', methods=['POST'])
 def push_task():
-
     try:
         post_data = json.loads(request.data)
         db = mydb.mysql_driver()
@@ -42,7 +41,7 @@ def push_task():
         push_data = {}
         push_data['log_id'] = log_id
         push_data['app_id'] = app['app_id']
-        push_data['log_push_type'] = post_data['push_type']
+        push_data['push_type'] = post_data['push_type']
         push_data['push_target'] = post_data['push_target']
         push_data['push_content'] = post_data['push_content']
 
