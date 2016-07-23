@@ -11,7 +11,6 @@ class MysqlDriverException(Exception):
 class mysql_driver():
     def __init__(self):
         try:
-            #self.conn = psycopg2.connect(database=os.getenv('DB_NAME'), user=os.getenv('DB_LOGIN_NAME'), password=os.getenv('DB_LOGIN_PASS'), host=os.getenv('DB_HOST'))
             self.conn = MySQLdb.connect(host=os.getenv('DB_HOST'), user=os.getenv('DB_USER'), passwd=os.getenv('DB_PASSWD'), db=os.getenv('DB_NAME'), charset='utf8')
             self.cur = self.conn.cursor()
         except Exception as e:
@@ -23,16 +22,16 @@ class mysql_driver():
         except Exception as e:
             pass
 
-    def read(self, sql):
+    def read(self, sql, argv = ''):
         try:
-            self.cur.execute(sql)
+            self.cur.execute(sql, argv)
             return [dict((self.cur.description[i][0], value) for i, value in enumerate(row)) for row in self.cur.fetchall()]
         except Exception as e:
             raise MysqlDriverException(500, ("数据库读取失败:%s" % e))
 
-    def write(self ,sql):
+    def write(self ,sql, argv = ''):
         try:
-            self.cur.execute(sql)
+            self.cur.execute(sql, argv)
             self.conn.commit()
         except Exception as e:
             self.conn.rollback()
