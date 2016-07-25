@@ -5,7 +5,6 @@ from flask import Flask, request
 import mydb
 import json
 import redis
-import pdb
 import os
 import requests
 
@@ -18,6 +17,10 @@ def check():
         #测试mariadb能否连接
         db = mydb.mysql_driver()
         app = db.read('SELECT * FROM app where app_id = %s', (post_data['app_id'],))
+        #appid检测
+        if len(app) < 1:
+            raise Exception('invalid app id!')
+
         app = app[0]
 
         #app处于关闭状态，拒绝
@@ -49,6 +52,10 @@ def push():
         post_data = json.loads(request.data)
         db = mydb.mysql_driver()
         app = db.read('SELECT * FROM app where app_id = %s', (post_data['app_id'],))
+        #appid检测
+        if len(app) < 1:
+            raise Exception('invalid app id!')
+
         app = app[0]
 
         #app处于关闭状态，拒绝

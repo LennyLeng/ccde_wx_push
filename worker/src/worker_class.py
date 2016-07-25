@@ -25,7 +25,14 @@ class worker():
 
             db = mydb.mysql_driver()
             self.app = db.read('SELECT * FROM app where app_id = %s' , (os.getenv('APP_ID'),))
+            if len(self.app) < 1:
+                raise Exception('invalid app id!')
+
             self.app = self.app[0]
+
+            #app处于关闭状态，拒绝
+            if self.app['app_switch_flag'] == False:
+                raise Exception('app is disable!')
 
             self.rd = redis.Redis(host=os.getenv('CACHE_HOST'))
             self.rs = self.rd.pubsub()
