@@ -34,6 +34,20 @@ class worker():
             if self.app['app_switch_flag'] == False:
                 raise Exception('app is disable!')
 
+            #参数检查开始
+            if self.app['app_channel'] == None or self.app['app_channel'] == '':
+                raise Exception('db parameter[app_channel] error')
+
+            if self.app['app_wx_corp_id'] == None or self.app['app_wx_corp_id'] == '':
+                raise Exception('db parameter[app_wx_corp_id] error')
+
+            if self.app['app_wx_corp_secret'] == None or self.app['app_wx_corp_secret'] == '':
+                raise Exception('db parameter[app_wx_corp_secret] error')
+
+            if self.app['app_wx_id'] == None or self.app['app_wx_id'] == 0:
+                raise Exception('db parameter[app_wx_id] error')
+            #参数检查完毕
+
             self.rd = redis.Redis(host=os.getenv('CACHE_HOST'))
             self.rs = self.rd.pubsub()
             self.rs.subscribe(self.app['app_channel'])
@@ -80,6 +94,13 @@ class worker():
             db = mydb.mysql_driver()
             db.write("UPDATE log SET log_push_ret=%s, log_push_time=now(), log_push_success_status=true WHERE log_id=%s" , (r.text, msg['log_id']))
             return True
+
+        except requests.exceptions as e:
+            db = mydb.mysql_driver()
+            db.write("UPDATE log SET log_push_ret=%s, log_push_time=now(), log_push_success_status=false WHERE log_id=%s" , (e.message, msg['log_id']))
+
+            logging.error(e.message)
+            return False
         except Exception as e:
 
             db = mydb.mysql_driver()
@@ -103,7 +124,7 @@ class worker():
                 return self._get_token_online(token_key)
 
         except Exception as e:
-            logging.error(e.message)
+            logging.error(str(e.message))
             raise e
 
         logging.info('old token')
@@ -118,7 +139,7 @@ class worker():
             ret = self.rd.set(token_key, json.dumps(new_token_data, ensure_ascii=False))
             return new_token_data['access_token']
         except Exception as e:
-            logging.error(e.message)
+            logging.error(str(e.message))
             raise e
 
 if __name__ == '__main__':
