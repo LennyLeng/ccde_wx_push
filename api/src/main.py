@@ -36,14 +36,17 @@ def check():
             raise Exception('worker not ready! please contact admin')
 
         #测试微信企业号api是否正常
-        r = requests.get('https://qyapi.weixin.qq.com/cgi-bin/gettoken')
+        r = requests.get('https://qyapi.weixin.qq.com/cgi-bin/gettoken', timeout=3)
         r.raise_for_status()
 
         ret_data = {'status' : True, 'error_info' : 'db ready, redis ready, worker ready, wxqy_api ready, no error'}
         return json.dumps(ret_data, ensure_ascii=False)
 
+    except requests.exceptions as e:
+        ret_data = {'status' : False, 'error_info' : 'network timeout! please contact admin'}
+        return json.dumps(ret_data, ensure_ascii=False)
     except Exception as e:
-        ret_data = {'status' : False, 'error_info' : e.message}
+        ret_data = {'status' : False, 'error_info' : str(e.message)}
         return json.dumps(ret_data, ensure_ascii=False)
 
 @app.route('/push', methods=['POST'])
@@ -87,7 +90,7 @@ def push():
 
         log_id = db.write_ret_val()
     except Exception as e:
-        ret_data = {'db_status' : False, 'cache_status' : False, 'error_info' : e.message}
+        ret_data = {'db_status' : False, 'cache_status' : False, 'error_info' : str(e.message)}
         return json.dumps(ret_data, ensure_ascii=False)
 
     try:
@@ -108,7 +111,7 @@ def push():
         if ret < 1:
             raise Exception('worker not ready! please contact admin')
     except Exception as e:
-        ret_data = {'db_status' : True, 'cache_status' : False, 'error_info' : e.message, 'log_id' : log_id}
+        ret_data = {'db_status' : True, 'cache_status' : False, 'error_info' : str(e.message), 'log_id' : log_id}
         return json.dumps(ret_data, ensure_ascii=False)
 
     ret_data = {'db_status' : True, 'cache_status' : True, 'log_id' : log_id}
