@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="zh-CN" class="app_list">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>川庆钻探微信企业号发送平台</title>
+
+    <link href="{{ url_for('static',filename='css/bootstrap.min.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static',filename='css/bootstrap-theme.min.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static',filename='css/ladda-themeless.min.css') }}" rel="stylesheet">
+	  <link href="{{ url_for('static',filename='css/ccde.wx.push.css') }}" rel="stylesheet">
+  </head>
+
+  <body role="document">
+    <div class="modal fade" id="show_error" tabindex="-1" role="dialog" aria-hidden="true">
+     <div class="modal-dialog">
+        <div class="modal-content">
+           <div class="modal-header">
+              <button type="button" class="close"
+                 data-dismiss="modal" aria-hidden="true">
+                    &times;
+              </button>
+              <h4 class="modal-title">
+                 错误提示
+              </h4>
+           </div>
+           <div class="modal-body" id="show_error_content">
+           </div>
+           <div class="modal-footer">
+              <button type="button" class="btn btn-default"
+                 data-dismiss="modal">关闭
+              </button>
+           </div>
+        </div><!-- /.modal-content -->
+  </div><!-- /.modal -->
+</div>
+    <!-- Fixed navbar -->
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <img class="navbar-brand" src="{{ url_for('static',filename='img/cnpc_logo.png') }}">
+          <a class="navbar-brand title" href="#">川庆钻探微信企业号发送平台</a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+                  <ul class="nav navbar-nav">
+                    <li class="active"><a href="/app_list">应用列表</a></li>
+                    <li class="dropdown">
+                      <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">日志列表<span class="caret"></span></a>
+                      <ul class="dropdown-menu">
+                        {% for item in app %}
+                        <li><a href="/log_list/{{ item.app_id }}">{{ item.app_name }}</a></li>
+                        {% endfor %}
+                        {% if session['is_admin'] == True %}
+                        <li role="separator" class="divider"></li>
+                        <li><a href="/log_list">所有日志</a></li>
+                        {% endif %}
+                      </ul>
+                    </li>
+                  </ul>
+                  <ul class="nav navbar-nav  navbar-right">
+                    <li><a href="#">你好，
+                        {% if session['is_admin'] == True %}
+                          {{ session['admin_name'] }}
+                        {% else %}
+                          {{ session['app_name'] }}管理员
+                        {% endif %}
+                    </a></li>
+                    <li><a href="/logout">注销</a></li>
+                  </ul>
+                </div><!--/.nav-collapse -->
+      </div>
+    </nav>
+
+    <div class="container main" role="main">
+        <div class="col-md-12">
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th>应用编号</th>
+                <th>应用名称</th>
+                <th>申请人</th>
+                <th>是否启用</th>
+                <th>应用健康状态</th>
+				        <th>应用详细操作</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for item in app %}
+              <tr value="{{ item.app_id }}">
+                <td>{{ item.app_id }}</td>
+                <td>{{ item.app_name }}</td>
+                <td>{{ item.app_principal_name }}</td>
+                <td>
+                {% if item.app_switch_flag  == 1  %}
+                <span class="label label-success">启用</span>
+                {% else %}
+                <span class="label label-danger">停用</span>
+                {% endif %}
+                </td>
+                <td>
+                  <button type="button" class="btn btn-sm btn-primary btn-check ladda-button" data-style="zoom-out">
+                    <span class="ladda-label">检查</span>
+                  </button>
+                </td>
+                <td>
+                  <button type="button" class="btn btn-sm btn-default btn-detail" >详情</button>
+                  <a href="/log_list/{{ item.app_id }}"><button type="button" class="btn btn-sm btn-default">日志</button></a>
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    <script src="{{ url_for('static',filename='js/jquery.min.js') }}"></script>
+    <script src="{{ url_for('static',filename='js/bootstrap.min.js') }}"></script>
+    <script src="{{ url_for('static',filename='js/spin.min.js') }}"></script>
+    <script src="{{ url_for('static',filename='js/ladda.min.js') }}"></script>
+    <script src="{{ url_for('static',filename='js/wx.push.js') }}"></script>
+
+  </body>
+</html>

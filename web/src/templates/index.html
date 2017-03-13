@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>川庆钻探微信企业号发送平台</title>
+
+    <link href="{{ url_for('static',filename='css/bootstrap.min.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static',filename='css/bootstrap-theme.min.css') }}" rel="stylesheet">
+	  <link href="{{ url_for('static',filename='css/ccde.wx.push.css') }}" rel="stylesheet">
+  </head>
+
+  <body role="document">
+    <!-- Fixed navbar -->
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <img class="navbar-brand" src="{{ url_for('static',filename='img/cnpc_logo.png') }}">
+          <a class="navbar-brand title" href="#">川庆钻探微信企业号发送平台</a>
+        </div>
+
+      </div>
+    </nav>
+
+    <div class="container" role="main">
+      <div class="jumbotron">
+      <h3>川庆钻探微信企业号发送平台</h3>
+
+      <div class="row">
+      <div class="col-md-push-4 col-md-3 col-xs-push-4 col-xs-3">
+      <form role="form" action="/login"  method="post">
+       <div class="form-group">
+       <input type="text" name="name" class="form-control" placeholder="用户名" required autofocus>
+       </div>
+       <div class="form-group">
+       <input type="password" name="pass" class="form-control" placeholder="密码" required>
+     </div>
+       <center>
+       <button type="submit" class="btn btn-primary">登录系统</button>
+       <a href="/doc"><button type="button" class="btn btn-info">查看文档</button></a>
+     </center>
+     </form>
+   </div>
+ </div>
+    </div>
+    </div>
+    <script src="{{ url_for('static',filename='js/jquery.min.js') }}"></script>
+    <script src="{{ url_for('static',filename='js/bootstrap.min.js') }}"></script>
+    <script src="{{ url_for('static',filename='js/wx.push.js') }}"></script>
+  </body>
+</html>

@@ -1,0 +1,111 @@
+<!DOCTYPE html><html><head><title>川庆钻探微信企业号推送平台 接口指南</title><meta charset='utf-8'><link href='{{ url_for('static',filename='css/marxico.css') }}' rel='stylesheet'><style></style></head><body><div id='preview-contents' class='note-content'>
+                        <div id="wmd-preview" class="preview-content"></div>
+                    <div id="wmd-preview-section-90" class="wmd-preview-section preview-content">
+
+</div><div id="wmd-preview-section-261" class="wmd-preview-section preview-content">
+
+<h3 id="川庆钻探微信企业号推送平台-接口指南">川庆钻探微信企业号推送平台 接口指南</h3></div><div id="wmd-preview-section-302" class="wmd-preview-section preview-content">
+
+<h5 id="接口功能">接口功能</h5>
+
+<p>推送信息到微信</p></div><div id="wmd-preview-section-423" class="wmd-preview-section preview-content">
+
+<h5 id="url">URL</h5>
+
+<p><a href="http://10.132.5.252:8000/push" target="_blank">http://10.132.5.252:8000/push</a></p></div><div id="wmd-preview-section-28" class="wmd-preview-section preview-content">
+
+<h5 id="支持格式">支持格式</h5>
+
+<p>JSON</p>
+
+</div><div id="wmd-preview-section-435" class="wmd-preview-section preview-content">
+
+<h5 id="http请求方式">HTTP请求方式</h5>
+
+<p>POST</p></div><div id="wmd-preview-section-1486" class="wmd-preview-section preview-content">
+
+<h6 id="请求参数">请求参数</h6>
+
+<table>
+<thead>
+<tr>
+  <th align="left">参数</th>
+  <th align="left">必选</th>
+  <th align="left">类型</th>
+  <th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+  <td align="left">app_id</td>
+  <td align="left">true</td>
+  <td align="left">int</td>
+  <td>应用ID号，由本系统管理提供给用户</td>
+</tr>
+<tr>
+  <td align="left">push_content</td>
+  <td align="left">true</td>
+  <td align="left">string</td>
+  <td>发送的消息</td>
+</tr>
+<tr>
+  <td align="left">touser</td>
+  <td align="left">false</td>
+  <td align="left">string</td>
+  <td>成员ID列表（多个接收者用‘|’分隔）</td>
+</tr>
+<tr>
+  <td align="left">toparty</td>
+  <td align="left">false</td>
+  <td align="left">string</td>
+  <td>部门ID列表（多个接收者用‘|’分隔）</td>
+</tr>
+<tr>
+  <td align="left">totag</td>
+  <td align="left">false</td>
+  <td align="left">string</td>
+  <td>标签ID列表（多个接收者用‘|’分隔）</td>
+</tr>
+</tbody></table>
+</div><div id="wmd-preview-section-1517" class="wmd-preview-section preview-content">
+
+<h6 id="返回字段">返回字段</h6>
+
+<table>
+<thead>
+<tr>
+  <th align="left">返回字段</th>
+  <th align="left">字段类型</th>
+  <th align="left">说明</th>
+</tr>
+</thead>
+<tbody><tr>
+  <td align="left">log_id</td>
+  <td align="left">int</td>
+  <td align="left">日志ID号</td>
+</tr>
+<tr>
+  <td align="left">cache_status</td>
+  <td align="left">bool</td>
+  <td align="left">缓存插入成功，正常情况下立即可以收到消息</td>
+</tr>
+<tr>
+  <td align="left">db_status</td>
+  <td align="left">bool</td>
+  <td align="left">数据库插入成功，消息在未来的某个时间点一定可以推送给用户</td>
+</tr>
+</tbody></table>
+
+
+</div><div id="wmd-preview-section-2354" class="wmd-preview-section preview-content">
+
+<h6 id="注意">注意</h6>
+
+<ol><li rel="1">调用API时，只能再本系统登记的IP地址上调用，否则会返回调用失败，并在error_info字段里面提示“非法IP地址”</li>
+<li rel="2">整个发送过程为异步发送，API不会出现长时间阻塞现象。</li>
+</ol></div><div id="wmd-preview-section-1438" class="wmd-preview-section preview-content">
+
+<h6 id="接口示例-1">接口示例</h6>
+
+<p>地址：<a href="http://10.132.5.252:8000/push" target="_blank">http://10.132.5.252:8000/push</a></p></div><div id="wmd-preview-section-1449" class="wmd-preview-section preview-content">
+
+<pre class="prettyprint hljs-dark"><code class="language-javascript hljs">{<br>    <span class="hljs-string">"app_id"</span>: <span class="hljs-number">2</span>,<br>    <span class="hljs-string">"push_touser"</span>: <span class="hljs-string">"lengwl_wt"</span>,<br>    <span class="hljs-string">"push_content"</span> : <span class="hljs-string">"测试一下"</span><br>}<br></code></pre></div><div id="wmd-preview-section-footnotes" class="preview-content"></div></div></body></html>

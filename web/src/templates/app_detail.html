@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>川庆钻探微信企业号发送平台</title>
+
+    <link href="{{ url_for('static',filename='css/bootstrap.min.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static',filename='css/bootstrap-theme.min.css') }}" rel="stylesheet">
+	  <link href="{{ url_for('static',filename='css/ccde.wx.push.css') }}" rel="stylesheet">
+  </head>
+
+  <body role="document">
+    <div class="container detail" role="main">
+        <div class="col-md-12">
+          <table class="table table-bordered">
+              <tr>
+                <th class="col-md-2">应用ID</th>
+                <td class="col-md-4">{{ app.app_id }} </td>
+                <th class="col-md-2">应用名字</th>
+                <td class="col-md-4">{{ app.app_name }}</td>
+              </tr>
+              <tr>
+                <th>应用服务器IP</th>
+                <td>{{ app.app_server_ip }}</td>
+                <th>应用微信ID</th>
+                <td>{{ app.app_wx_id }}</td>
+              </tr>
+              <tr>
+                <th>应用企业ID</th>
+                <td>{{ app.app_wx_corp_id }}</td>
+                <th>应用企业密钥</th>
+                <td>{{ app.app_wx_corp_secret }}</td>
+              </tr>
+              <tr>
+                <th>应用频道</th>
+                <td>{{ app.app_channel }}</td>
+                <th>应用创建时间</th>
+                <td>{{ app.app_create_date }}</td>
+              </tr>
+              <tr>
+                <th>应用申请人姓名</th>
+                <td>{{ app.app_principal_name }}</td>
+                <th>应用申请人电话</th>
+                <td>{{ app.app_principal_phone }}</td>
+              </tr>
+              <tr>
+                <th>应用申请人邮箱</th>
+                <td>{{ app.app_principal_email }}</td>
+                <th>应用默认发送人员</th>
+                <td>{{ app.app_default_touser }}</td>
+              </tr>
+              <tr>
+                <th>应用默认发送部门</th>
+                <td>{{ app.app_default_toparty }}</td>
+                <th>应用默认发送标签</th>
+                <td>{{ app.app_default_totag }}</td>
+              </tr>
+              <tr>
+                <th>应用备注</th>
+                <td>{{ app.app_note }}</td>
+                <th>应用开关状态</th>
+                <td>
+                  {% if app.app_switch_flag  == 1  %}
+                  <span class="label label-success">启用</span>
+                  {% else %}
+                  <span class="label label-danger">停用</span>
+                  {% endif %}
+                </td>
+              </tr>
+          </table>
+        </div>
+      </div>
+    <script src="{{ url_for('static',filename='js/jquery.min.js') }}"></script>
+    <script src="{{ url_for('static',filename='js/bootstrap.min.js') }}"></script>
+    <script src="{{ url_for('static',filename='js/wx.push.js') }}"></script>
+  </body>
+</html>
