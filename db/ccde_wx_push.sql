@@ -54,6 +54,7 @@ CREATE TABLE IF NOT EXISTS `ccde_wx_push`.`log` (
   `log_push_totag` TEXT NULL,
   `log_push_text` TEXT NOT NULL,
   `log_push_ret` TEXT NOT NULL,
+  `log_insert_time` DATETIME NULL,
   `log_push_time` DATETIME NULL,
   `log_push_success_status` TINYINT(1) NOT NULL DEFAULT 0,
   `app_id` INT NOT NULL,
