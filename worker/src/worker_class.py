@@ -57,6 +57,13 @@ class worker():
             logging.error(e.message)
             return False
 
+    def __del__(self):
+        try:
+            self.rs.unsubscribe()
+        except Exception as e:
+            logging.error(e.message)
+            return False
+
     def get_msg(self):
         try:
             return self.rs.get_message()
@@ -87,7 +94,7 @@ class worker():
 
             logging.info(json.dumps(push_data, ensure_ascii=False))
             push_data = json.dumps(push_data, ensure_ascii=False).encode('utf8')
-            r = requests.post("https://qyapi.weixin.qq.com/cgi-bin/message/send",params={"access_token" : token}, data=push_data)
+            r = requests.post("https://qyapi.weixin.qq.com/cgi-bin/message/send",params={"access_token" : token}, data=push_data, timeout=5)
 
             logging.info(r.text)
 
@@ -95,12 +102,6 @@ class worker():
             db.write("UPDATE log SET log_push_ret=%s, log_push_time=now(), log_push_success_status=true WHERE log_id=%s" , (r.text, msg['log_id']))
             return True
 
-        except requests.exceptions as e:
-            db = mydb.mysql_driver()
-            db.write("UPDATE log SET log_push_ret=%s, log_push_time=now(), log_push_success_status=false WHERE log_id=%s" , (e.message, msg['log_id']))
-
-            logging.error(e.message)
-            return False
         except Exception as e:
 
             db = mydb.mysql_driver()
@@ -133,7 +134,7 @@ class worker():
     def _get_token_online(self, token_key):
         try:
             payload = {'corpid': self.app['app_wx_corp_id'], 'corpsecret': self.app['app_wx_corp_secret']}
-            r = requests.get("https://qyapi.weixin.qq.com/cgi-bin/gettoken", params=payload)
+            r = requests.get("https://qyapi.weixin.qq.com/cgi-bin/gettoken", params=payload, timeout=5)
             new_token_data = json.loads(r.text)
             new_token_data['timestamp'] = time.time()
             ret = self.rd.set(token_key, json.dumps(new_token_data, ensure_ascii=False))
@@ -141,6 +142,9 @@ class worker():
         except Exception as e:
             logging.error(str(e.message))
             raise e
+
+    def check_log(self):
+        logging.info('check')
 
 if __name__ == '__main__':
     pass

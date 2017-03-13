@@ -18,6 +18,7 @@ class mysql_driver():
 
     def __del__(self):
         try:
+            self.cur.close()
             self.conn.close()
         except Exception as e:
             pass

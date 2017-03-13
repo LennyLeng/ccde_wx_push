@@ -36,15 +36,12 @@ def check():
             raise Exception('worker not ready! please contact admin')
 
         #测试微信企业号api是否正常
-        r = requests.get('https://qyapi.weixin.qq.com/cgi-bin/gettoken', timeout=3)
+        r = requests.get('https://qyapi.weixin.qq.com/cgi-bin/gettoken', timeout=5)
         r.raise_for_status()
 
         ret_data = {'status' : True, 'error_info' : 'db ready, redis ready, worker ready, wxqy_api ready, no error'}
         return json.dumps(ret_data, ensure_ascii=False)
 
-    except requests.exceptions as e:
-        ret_data = {'status' : False, 'error_info' : 'network timeout! please contact admin'}
-        return json.dumps(ret_data, ensure_ascii=False)
     except Exception as e:
         ret_data = {'status' : False, 'error_info' : str(e.message)}
         return json.dumps(ret_data, ensure_ascii=False)
@@ -84,7 +81,7 @@ def push():
             post_data['push_totag'] = ''
 
         db.write(
-            "INSERT INTO log(log_push_touser, log_push_toparty, log_push_totag, log_push_text, app_id) VALUES (%s ,%s, %s, %s, %s)",
+            "INSERT INTO log(log_push_touser, log_push_toparty, log_push_totag, log_push_text, app_id, log_insert_time) VALUES (%s ,%s, %s, %s, %s, NOW())",
             (post_data['push_touser'], post_data['push_toparty'], post_data['push_totag'], post_data['push_content'], app['app_id'])
         )
 

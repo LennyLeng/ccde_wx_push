@@ -14,7 +14,7 @@ if __name__ == '__main__':
     shut_status = False
     signal.signal(signal.SIGTERM, on_signal_term)
 
-    while True:
+    while shut_status == False:
         worker = worker_class.worker()
 
         if worker.init() == False:
@@ -23,6 +23,7 @@ if __name__ == '__main__':
 
         while shut_status == False:
             msg = worker.get_msg()
+
             if msg == False:
                 time.sleep(0.5)
                 break
@@ -34,7 +35,8 @@ if __name__ == '__main__':
                     if ret == False:
                         time.sleep(0.5)
                         break
-                #print 'check'
+                else:
+                    worker.check_log()
                 continue
 
             time.sleep(0.5)
